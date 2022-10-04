@@ -9,7 +9,7 @@
 | **CREATE AND EDIT**       ||  
 | Show intention actions==  | Alt + Enter          |
 | ==Basic code completion== | Ctrl + Space         |
-| Smart code completion     | Ctrl + Shift + Space |
+| ~Smart code completion~   | Ctrl + Shift + Space |
 |                           |                      |
 |                           |                      |
 
