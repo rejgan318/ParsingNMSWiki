@@ -2,17 +2,18 @@
 Parsing No Man's Ski Fandom WIki Cooking
 https://nomanssky.fandom.com/wiki/Cooking_Products
 """
-# TODO Load file for parsing from http
-# TODO Github, branch without parsing fuctions
-# TODO Problems revision
-# TODO Comments, docstring, typig for BS
+
+#TODO Github, branch without parsing fuctions
+#TODO Problems revision
+#TODO Comments, docstring, typig for BS
 
 import csv
 from dataclasses import dataclass, astuple
 from bs4 import BeautifulSoup
+import requests
 
 FILE_FOR_PARSING = "html_source/wiki_cooking/Cooking Products - No Man's Sky Wiki.html"
-
+URL_FOR_PARSING = "https://nomanssky.fandom.com/wiki/Cooking_Products"
 
 @dataclass
 class Item:
@@ -60,9 +61,10 @@ def dataclass2csv(filename: str, rows: list[Item], header: bool = True):
         csv_writer.writerows([astuple(row) for row in rows])
 
 
-with open(FILE_FOR_PARSING, encoding='utf-8') as file_for_parsing:  # TODO To Ext function
-    html_doc = file_for_parsing.read()
+# with open(FILE_FOR_PARSING, encoding='utf-8') as file_for_parsing:
+#     html_doc = file_for_parsing.read()
 
+html_doc = requests.get(URL_FOR_PARSING).text
 tags = BeautifulSoup(html_doc, 'html.parser') \
     .find('div', {'class': 'mw-parser-output'}) \
     .find('span', id='Summary').parent \
