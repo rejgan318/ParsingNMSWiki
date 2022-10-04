@@ -3,8 +3,7 @@ Parsing No Man's Ski Fandom WIki Cooking
 https://nomanssky.fandom.com/wiki/Cooking_Products
 """
 # TODO Load file for parsing from http
-# TODO Github, README.MD
-# TODO Github, brunch without parsing fuctions
+# TODO Github, branch without parsing fuctions
 # TODO Problems revision
 # TODO Comments, docstring, typig for BS
 
