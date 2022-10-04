@@ -2,7 +2,15 @@
 
 ## CREATE AND EDIT
 
-| Syntax | Description |
-| --- | ----------- |
-| Header | Title |
-| Paragraph | Text |
+
+
+|                           | Short Key            |
+|---------------------------|----------------------|
+| **CREATE AND EDIT**       ||  
+| Show intention actions==  | Alt + Enter          |
+| ==Basic code completion== | Ctrl + Space         |
+| Smart code completion     | Ctrl + Shift + Space |
+|                           |                      |
+|                           |                      |
+
+H~2~O X^2^
