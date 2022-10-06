@@ -3,7 +3,7 @@ Parsing No Man's Ski Fandom WIki Cooking
 https://nomanssky.fandom.com/wiki/Cooking_Products
 """
 
-# TODO Verion number for github
+# TODO Verion number for github +tag version
 
 from dataclasses import dataclass, astuple, fields
 import csv
