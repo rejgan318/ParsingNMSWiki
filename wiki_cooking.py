@@ -3,66 +3,30 @@ Parsing No Man's Ski Fandom WIki Cooking
 https://nomanssky.fandom.com/wiki/Cooking_Products
 """
 
-#TODO Github, branch without parsing fuctions
-#TODO Problems revision
-#TODO Comments, docstring, typig for BS
-
+from dataclasses import dataclass, astuple, fields
 import csv
-from dataclasses import dataclass, astuple
 from bs4 import BeautifulSoup
 import requests
 
-FILE_FOR_PARSING = "html_source/wiki_cooking/Cooking Products - No Man's Sky Wiki.html"
 URL_FOR_PARSING = "https://nomanssky.fandom.com/wiki/Cooking_Products"
+CSV_FOR_SAVE = "data.csv"
 
-@dataclass
+
+@dataclass(frozen=True)
 class Item:
     group: str
     sub_group: str
     name: str
-    # ptcture_link: str
     link: str
 
 
-def parse_group(h2_tag) -> str:
-    return str(h2_tag.find('span', {'class': 'mw-headline'}).string)
-
-
-def parse_sub_group(h3_tag) -> str:
-    return str(h3_tag.find('span', {'class': 'mw-headline'}).string) if h3_tag else ''
-
-
-def parse_name(li_tag) -> str:
-    return str(li_tag.div.find('p').a.string)
-
-
-def parse_picture_link(li_tag) -> str:  # not used now
-    return str(li_tag.div.div.div.a.img['src'])
-
-
-def parse_link(li_tag) -> str:
-    return str(li_tag.div.find('p').a['href'])
-
-
-def parse_names(ul_tag, group, sub_group) -> list[Item]:
-    return [Item(group=parse_group(group),
-                 sub_group=parse_sub_group(sub_group),
-                 name=parse_name(name),
-                 # ptcture_link=parse_picture_link(name),
-                 link=parse_link(name))
-            for name in ul_tag.findAll('li')]
-
-
-def dataclass2csv(filename: str, rows: list[Item], header: bool = True):
+def save_dataclass_to_csv(filename: str, rows: list[Item], header: bool = True):
     with open(filename, 'w', encoding='utf-8', newline='') as csv_file:
         csv_writer = csv.writer(csv_file, dialect='unix')
         if header:
-            csv_writer.writerow(['group', 'subgroup', 'name', 'link'])
+            csv_writer.writerow([field.name for field in fields(rows[0])])
         csv_writer.writerows([astuple(row) for row in rows])
 
-
-# with open(FILE_FOR_PARSING, encoding='utf-8') as file_for_parsing:
-#     html_doc = file_for_parsing.read()
 
 html_doc = requests.get(URL_FOR_PARSING).text
 tags = BeautifulSoup(html_doc, 'html.parser') \
@@ -74,11 +38,18 @@ items: list[Item] = []
 for tag in tags:
     match tag.name:
         case 'h2':
-            h2 = tag
-            h3 = None  # Optionaly
+            h2_tag = tag
+            h3_tag = None  # Optionaly
         case 'h3':
-            h3 = tag
+            h3_tag = tag
         case 'ul':
-            items += parse_names(tag, h2, h3)
+            ul_tag = tag
+            group = str(h2_tag.find('span', {'class': 'mw-headline'}).string)
+            sub_group = str(h3_tag.find('span', {'class': 'mw-headline'}).string) if h3_tag else ''
+            items += [Item(group=group,
+                           sub_group=sub_group,
+                           name=str((a_tag := li_tag.div.find('p').a).string),
+                           link=str(a_tag['href']))
+                      for li_tag in ul_tag.findAll('li')]
 
-dataclass2csv('data.csv', items)
+save_dataclass_to_csv(CSV_FOR_SAVE, items)
