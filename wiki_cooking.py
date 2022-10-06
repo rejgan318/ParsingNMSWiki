@@ -38,18 +38,15 @@ items: list[Item] = []
 for tag in tags:
     match tag.name:
         case 'h2':
-            h2_tag = tag
-            h3_tag = None  # Optionaly
+            group = str(tag.find('span', {'class': 'mw-headline'}).string)
+            sub_group = ''
         case 'h3':
-            h3_tag = tag
+            sub_group = str(tag.find('span', {'class': 'mw-headline'}).string)
         case 'ul':
-            ul_tag = tag
-            group = str(h2_tag.find('span', {'class': 'mw-headline'}).string)
-            sub_group = str(h3_tag.find('span', {'class': 'mw-headline'}).string) if h3_tag else ''
             items += [Item(group=group,
                            sub_group=sub_group,
                            name=str((a_tag := li_tag.div.find('p').a).string),
                            link=str(a_tag['href']))
-                      for li_tag in ul_tag.findAll('li')]
+                      for li_tag in tag.findAll('li')]
 
 save_dataclass_to_csv(CSV_FOR_SAVE, items)
