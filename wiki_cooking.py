@@ -3,7 +3,7 @@ Parsing No Man's Ski Fandom WIki Cooking
 https://nomanssky.fandom.com/wiki/Cooking_Products
 """
 
-# TODO Verion number for github +tag version
+# TODO requirements.txt
 
 from dataclasses import dataclass, astuple, fields
 import csv
@@ -11,7 +11,7 @@ from bs4 import BeautifulSoup
 import requests
 
 URL_FOR_PARSING = "https://nomanssky.fandom.com/wiki/Cooking_Products"
-CSV_FOR_SAVE = "data.csv"
+CSV_FOR_SAVE = "coocking_items.csv"
 
 
 @dataclass(frozen=True)
