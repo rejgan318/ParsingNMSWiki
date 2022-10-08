@@ -3,7 +3,7 @@ Parsing No Man's Ski Fandom WIki Cooking
 https://nomanssky.fandom.com/wiki/Cooking_Products
 """
 
-# TODO requirements.txt
+# TODO tag from pycharm to github?
 
 from dataclasses import dataclass, astuple, fields
 import csv
