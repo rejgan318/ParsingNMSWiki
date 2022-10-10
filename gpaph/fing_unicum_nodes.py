@@ -1,6 +1,6 @@
 """ Research graph """
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, asdict
 
 
 @dataclass()
@@ -8,20 +8,39 @@ class Node:
     name: str
     relations: list[str] = field(default_factory=list)
 
-def read_graph(file_name):
-    with open(file_name) as file:
-        full_grapf = []
-        for graph in file:
-            ws = graph.strip().split(' ')
-            full_grapf.append(Node(name=ws[0], relations=list(ws[1] if len(ws) == 2 else [])))
-        return full_grapf
+
+class Nodes:
+    def __init__(self, file_name: str):
+        self.full_grapf = dict({})
+        self.names = set({})
+        self.read_graph(file_name)
+
+    def read_graph(self, file_name):
+        with open(file_name) as file:
+            for graph in file:
+                node_config_str = graph.strip().split(' ')
+                self.full_grapf[node_config_str[0]] = Node(name=node_config_str[0],
+                                                           relations=list(
+                                                               node_config_str[1] if len(node_config_str) == 2 else []))
+
+    def get_node(self, name):
+        return Node(**asdict(self.full_grapf[name]))
+
+    def parse_node(self, node: Node):
+        self.names = self.names | {node.name}
+        for rel in node.relations:
+            rel_node = self.get_node(rel)
+            if not (rel_node.name in self.names):
+                added_names = self.parse_node(rel_node)
+                self.names = self.names | added_names
+        return self.names
 
 
 def main():
-    full_graph = read_graph('topograph.txt')
-    print(full_graph)
-    current = full_graph[0].name
-
+    start_node_name = 'A'
+    nodes = Nodes('topograph.txt')
+    nodes.parse_node(nodes.get_node(start_node_name))
+    print(sorted(list(nodes.names)))
     print('Done.')
 
 
