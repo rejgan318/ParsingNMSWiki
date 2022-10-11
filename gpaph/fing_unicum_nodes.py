@@ -1,5 +1,26 @@
-""" Research graph """
+"""
+Research graph
+1. Read graph topology from txt-file
+    <Node-name> <Node-name1><Node-name2>...
+    Example:
+A BC
+B D
+C EF
+D G
+G IJH
+I
+J KG
+K
+H
+E LM
+L
+M
+F
 
+    Graph can be with back relation - look "J KG"
+2. Recursive parcing from top node start_node_name
+3. Calculate unicum names nodes
+"""
 from dataclasses import dataclass, field, asdict
 
 

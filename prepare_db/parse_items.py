@@ -1,6 +1,11 @@
+"""
+1. Read CSV_FILE (created by wiki_cooking.py)
+2. Create lists groups and subgroups with id
+3. Create normalized list db_items with id's without text
+4. Export lists to csv
+"""
 import csv
-from dataclasses import dataclass, asdict, fields, astuple
-import itertools
+from dataclasses import dataclass, fields, astuple
 
 CSV_FILE = r"..\coocking_items.csv"
 

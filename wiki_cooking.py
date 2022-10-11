@@ -1,6 +1,9 @@
 """
 Parsing No Man's Ski Fandom WIki Cooking
 https://nomanssky.fandom.com/wiki/Cooking_Products
+
+1. Parsing URL_FOR_PARSING
+2. Save to csv CSV_FOR_SAVE
 """
 
 # TODO tag from pycharm to github?
